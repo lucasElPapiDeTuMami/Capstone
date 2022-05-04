@@ -54,7 +54,7 @@ class Camera:
         self.stream.truncate(0)
         return img
 
-    def compute_psi(self,img):
+    def compute_psi(self,img, DEBUG = False):
         """ Compute yaw angle w.r.t. lane using Canny edge detectior and Hough transform.
 
         Arguments
@@ -67,7 +67,7 @@ class Camera:
             psi : double
                 Yaw angle of car w.r.t. lane.
         """
-
+        
         # Perspective Transform
         pts1 = np.float32([[105,0],[210,0],[0,200],[320,200]])
         pts2 = np.float32([[0,0],[320,0],[0,208],[320,208]])
@@ -79,6 +79,8 @@ class Camera:
         #green = wrap[:,:,1]
         red = wrap[:,:,2]
         keep = red # NOTE: Adjust as necessary
+        if DEBUG:
+            cv2.imwrite('red.png',red)
 
         # Clean Noise. Find Edges.
         blur = cv2.blur(keep,(10,10))
@@ -87,12 +89,23 @@ class Camera:
         canny = cv2.Canny(thrsh,threshold1=25,threshold2=30)
 
         # Perform Hough Transform. Compute Psi.
-        lines = cv2.HoughLines(canny,1,np.pi/180,35)
-        rho, theta = lines[0,:,:] # Keep Candidate With Most Votes.\
-        if theta > np.pi/2:
-            psi = theta - np.pi
-        else:
-            psi = theta
+        psi = 0 #init as zero, just in case no lines are found.
+        if lines is not None:
+            lines = cv2.HoughLines(canny,1,np.pi/180,35)
+            rho, theta = lines[0,:,:] # Keep Candidate With Most Votes.\
+            if theta > np.pi/2:
+                psi = theta - np.pi
+            else:
+                psi = theta
+
+        if DEBUG:
+            cv2.imwrite('rawImg.img',img)
+            cv2.imwrite('wrap.png',wrap)
+            cv2.imwrite('blur.png',blur)
+            cv2.imwrite('thrsh.png',thrsh)
+            cv2.imwrite('canny.png',canny)
+            print(f"psi: {psi}")
+
 
         return psi
 
