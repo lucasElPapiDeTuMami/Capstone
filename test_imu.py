@@ -8,18 +8,26 @@ steer = Steer()
 print("Sweep Motor Vals")
 m.sweep()
 steer.change_steering_angle(0.5)
-print("Set Motor to 0.142 and Record IMU")
-m.change_motor_speed(0.142)
+print("Set Motor to 0.146")
+m.change_motor_speed(0.146)
 
-MAXSIZE = 10000
+print("PUT CAR ON FLOOR!")
+time.sleep(1)
+
+
+
+
+MAXSIZE = 500
 Gx = [0] * MAXSIZE
 Gy = [0] * MAXSIZE
 Gz = [0] * MAXSIZE
+print("Start Recording")
 for i in range(MAXSIZE):
     data = imu.fetchImuData()
     Gx[i] = data[3]
     Gy[i] = data[4]
     Gz[i] = data[5]
+    print(i)
 print("Done Recording")
 m.change_motor_speed(0.13)
 
@@ -40,4 +48,4 @@ with open('Gz.txt','w') as f:
         f.write('\n')
 
 
-print("done recording data")
+print("Done Writing Data")
