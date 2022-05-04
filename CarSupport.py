@@ -45,6 +45,7 @@ class Camera:
         self.camera.framerate = 30
         self.stream = picamera.array.PiRGBArray(self.camera)
         self.camera.resolution = (320,208)
+        self.res = (320,208)
 
     def take_picture(self):
         """Capture images and convert info to BGR array."""
@@ -81,6 +82,7 @@ class Camera:
         keep = red # NOTE: Adjust as necessary
         if DEBUG:
             cv2.imwrite('red.png',red)
+            cv2.imwrite('raw_image.png',img)
 
         # Clean Noise. Find Edges.
         blur = cv2.blur(keep,(10,10))
@@ -89,21 +91,22 @@ class Camera:
         canny = cv2.Canny(thrsh,threshold1=25,threshold2=30)
 
         # Perform Hough Transform. Compute Psi.
+        lines = cv2.HoughLines(canny,1,np.pi/180,35)
         psi = 0 #init as zero, just in case no lines are found.
         if lines is not None:
             lines = cv2.HoughLines(canny,1,np.pi/180,35)
-            rho, theta = lines[0,:,:] # Keep Candidate With Most Votes.\
+            rho, theta = lines[0,0,:] # Keep Candidate With Most Votes.\
             if theta > np.pi/2:
                 psi = theta - np.pi
             else:
                 psi = theta
 
         if DEBUG:
-            cv2.imwrite('rawImg.img',img)
-            cv2.imwrite('wrap.png',wrap)
-            cv2.imwrite('blur.png',blur)
-            cv2.imwrite('thrsh.png',thrsh)
-            cv2.imwrite('canny.png',canny)
+            #cv2.imwrite('rawImg.img',img)
+            #cv2.imwrite('wrap.png',wrap)
+            #cv2.imwrite('blur.png',blur)
+            #cv2.imwrite('thrsh.png',thrsh)
+            #cv2.imwrite('canny.png',canny)
             print(f"psi: {psi}")
 
 
