@@ -264,7 +264,7 @@ class Motor:
     sweep()
         Sweeps through all PWM signals until motor is unlocked. 
     
-    set_motor_speed(percent)
+    change_motor_speed(percent)
         Changes the motor speed to the desired percent of 2 ** 16 bits.
         This input generates a PWM signal.
 
@@ -279,14 +279,14 @@ class Motor:
     
     def sweep(self):
         print("Start Sweep")
-        for i in range(20):
+        for i in range(15):
             percent = i*0.001+0.13
             bits = math.floor(percent * 65535)
             self.pca.channels[self.channel].duty_cycle = bits
             time.sleep(0.3)
             print(f"i {i} percent: {percent} bits: {bits}")
     
-    def set_motor_speed(self,percent):
+    def change_motor_speed(self,percent):
         self.pca.channels[self.channel].duty_cycle = math.floor(percent * 65535)
 
 
