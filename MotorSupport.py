@@ -281,9 +281,10 @@ class Motor:
         print("Start Sweep")
         for i in range(20):
             percent = i*0.001+0.13
-            self.pca.channels[self.channel].duty_cycle = math.floor(i*0.001+0.13 * 65535)
+            bits = math.floor(percent * 65535)
+            self.pca.channels[self.channel].duty_cycle = bits
             time.sleep(0.3)
-            print(f"i {i} percent: {percent} bits: {math.floor(i*0.001+0.13 * 65535)}")
+            print(f"i {i} percent: {percent} bits: {bits}")
     
     def set_motor_speed(self,percent):
         self.pca.channels[self.channel].duty_cycle = math.floor(percent * 65535)
