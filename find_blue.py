@@ -28,13 +28,12 @@ keep = red #FIXME: adjust
 
 blur = cv2.blur(keep,(10,10))
 hist = cv2.calcHist([blur],[0],None,[256],[0,256])
-_,thrsh = cv2.threshold(blur,75,255,cv2.THRESH_BINARY)
+_,thrsh = cv2.threshold(blur,70,255,cv2.THRESH_BINARY)
 canny = cv2.Canny(thrsh,threshold1=25,threshold2=30)
-lines = cv2.HoughLines(canny,1,np.pi/180,1,None,0,0)
-print(lines.shape)
-
+lines = cv2.HoughLines(canny,1,np.pi/180,35)
+print(lines)
 if lines is not None :
-    rho, theta = lines[0,0,:]
+    rho, theta = lines[2,0,:]
     
     a = np.cos(theta)
     b = np.sin(theta)
@@ -62,7 +61,7 @@ else:
 # Show Images
 cv2.imshow('img',img)
 cv2.imshow('blue', blue)
-cv2.imshow('green', green)
+#cv2.imshow('green', green)
 cv2.imshow('red', red)
 cv2.imshow('blur',blur)
 cv2.imshow('thrsh',thrsh)
