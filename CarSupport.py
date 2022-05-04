@@ -70,7 +70,7 @@ class Camera:
         """
         
         # Perspective Transform
-        pts1 = np.float32([[105,0],[210,0],[0,200],[320,200]])
+        pts1 = np.float32([[53,0],[267,0],[0,200],[320,200]])
         pts2 = np.float32([[0,0],[320,0],[0,208],[320,208]])
         M = cv2.getPerspectiveTransform(pts1,pts2)
         wrap = cv2.warpPerspective(img,M,(320,200))

@@ -2,18 +2,18 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 
-img = cv2.imread('RawImg.png')
+img = cv2.imread('raw_image.png')
 
 
 # Coordinates that you want to Perspective Transform
-pts1 = np.float32([[105,0],[210,0],[0,200],[320,200]])
+pts1 = np.float32([[53,0],[267,0],[0,200],[320,200]])
 # Size of the Transformed Image
 pts2 = np.float32([[0,0],[320,0],[0,200],[320,200]])
 
-#cv2.circle(img,(105,0),3,(0,0,255),3)
-#cv2.circle(img,(210,0),3,(0,0,0),3)
-#cv2.circle(img,(0,200),3,(0,0,0),3)
-#cv2.circle(img,(320,200),3,(0,0,0),3)
+cv2.circle(img,(53,0),3,(0,0,255),3)
+cv2.circle(img,(267,0),3,(0,0,0),3)
+cv2.circle(img,(0,200),3,(0,0,0),3)
+cv2.circle(img,(320,200),3,(0,0,0),3)
 
 M = cv2.getPerspectiveTransform(pts1,pts2)
 wrap = cv2.warpPerspective(img,M,(320,200))
@@ -33,7 +33,7 @@ canny = cv2.Canny(thrsh,threshold1=25,threshold2=30)
 lines = cv2.HoughLines(canny,1,np.pi/180,35)
 print(lines)
 if lines is not None :
-    rho, theta = lines[2,0,:]
+    rho, theta = lines[0,0,:]
     
     a = np.cos(theta)
     b = np.sin(theta)
