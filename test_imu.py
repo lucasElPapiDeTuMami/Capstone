@@ -21,7 +21,7 @@ Az = [0] * MAXSIZE
 Gx = [0] * MAXSIZE
 Gy = [0] * MAXSIZE
 Gz = [0] * MAXSIZE
-delta = [0] * MAXSIZE
+d = [0] * MAXSIZE
 t = [0] * MAXSIZE
 
 startTime, curTime = time.time(), time.time()
@@ -37,10 +37,11 @@ while (startTime + runTime > curTime):
     data = imu.fetchImuData()
     Ax[i],Ay[i],Az[i] = data[0],data[1],data[2] 
     Gx[i],Gy[i],Gz[i] = data[3],data[4],data[5]
-    delta[i],t[i] = delta, curTime-startTime
+    d[i] = delta
+    t[i] = float(curTime - startTime)
     i += 1
 
-m.change_motor_speed(0.13)
+motor.change_motor_speed(0.13)
 
 
 
@@ -70,7 +71,7 @@ with open('Az.txt','w') as f:
         f.write('\n')
 with open('delta.txt','w') as f:
     for j in range(i):
-        f.write(f"{delta[j]}")
+        f.write(f"{d[j]}")
         f.write('\n')
 with open('t.txt','w') as f:
     for j in range(i):
