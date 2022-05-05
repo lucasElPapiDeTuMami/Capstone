@@ -237,7 +237,7 @@ class InertialMeasurementUnit:
         Gy = gyro_y/131.0
         Gz = gyro_z/131.0
         # organize data into list
-	# Convert Gyro Data units from (deg/s) -> (rad/s)
+	    # Convert Gyro Data units from (deg/s) -> (rad/s)
         data = [Ax, Ay, Az, np.deg2rad(Gx), np.deg2rad(Gy), np.deg2rad(Gz)]
         return data
 
